@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abraham's Cave - Jewish Learning Podcast</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(to bottom, #eff6ff, #ffffff); min-height: 100vh; }
+        header { background: #1e3a8a; color: white; padding: 1.5rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo { display: flex; align-items: center; gap: 1rem; }
+        .logo h1 { font-size: 2rem; }
+        .logo p { color: #93c5fd; font-size: 0.9rem; }
+        nav { display: flex; gap: 2rem; }
+        nav button { background: none; border: none; color: white; cursor: pointer; padding: 0.5rem 0; font-size: 1rem; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        nav button:hover, nav button.active { border-bottom-color: white; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .feature-box { background: #eff6ff; padding: 1.5rem; border-radius: 8px; }
+        .feature-box h3 { color: #1e3a8a; margin: 1rem 0 0.5rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .btn-primary { background: #1e3a8a; color: white; }
+        .btn-primary:hover { background: #1e40af; }
+        .btn-secondary { background: #4b5563; color: white; }
+        .btn-secondary:hover { background: #374151; }
+        .btn-light { background: #f3f4f6; color: #374151; }
+        .btn-light:hover { background: #e5e7eb; }
+        input, textarea { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+        textarea { resize: vertical; min-height: 100px; }
+        .episode { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; transition: box-shadow 0.3s; }
+        .episode:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .episode-header { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+        .episode-title { color: #1e3a8a; font-size: 1.3rem; font-weight: 600; }
+        .episode-meta { color: #6b7280; font-size: 0.9rem; }
+        .episode-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+        .admin-form { background: #eff6ff; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .comments-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; }
+        .comment { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; }
+        .comment-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        .comment-author { color: #1e3a8a; font-weight: 600; }
+        .comment-date { color: #6b7280; font-size: 0.85rem; }
+        .comment-form { background: #f9fafb; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        .donation-amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .amount-btn { padding: 1rem; border: 2px solid #d1d5db; background: white; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .amount-btn.selected { border-color: #1e3a8a; background: #1e3a8a; color: white; }
+        .hidden { display: none; }
+        footer { background: #1e3a8a; color: white; padding: 2rem; text-align: center; margin-top: 4rem; }
+        .delete-btn { background: #dc2626; color: white; padding: 0.5rem; border: none; border-radius: 4px; cursor: pointer; }
+        .delete-btn:hover { background: #b91c1c; }
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 1rem; }
+            nav { flex-wrap: wrap; }
+            .form-row { grid-template-columns: 1fr; }
+            .donation-amounts { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div>
+                    <h1>Abraham's Cave</h1>
+                    <p>Jewish Learning Podcast</p>
+                </div>
+            </div>
+            <nav>
+                <button onclick="showTab('home')" class="active" id="nav-home">Home</button>
+                <button onclick="showTab('episodes')" id="nav-episodes">Episodes</button>
+                <button onclick="showTab('blog')" id="nav-blog">Blog</button>
+                <button onclick="showTab('donate')" id="nav-donate">Donate</button>
+                <button onclick="showTab('admin')" id="nav-admin">Admin</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Home Tab -->
+        <div id="tab-home" class="tab-content">
+            <div class="card">
+                <h2 style="color: #1e3a8a; font-size: 2.5rem; margin-bottom: 1rem;">Welcome to Abraham's Cave</h2>
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #374151;">
+                    Join us on a journey through Jewish wisdom, tradition, and spirituality. Our podcast explores 
+                    Torah teachings, Jewish philosophy, and practical guidance for living a meaningful Jewish life.
+                </p>
+                <div class="grid-3">
+                    <div class="feature-box">
+                        <h3>Audio & Video</h3>
+                        <p style="color: #6b7280;">New Torah insights and discussions</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Written Content</h3>
+                        <p style="color: #6b7280;">Deep dives into Jewish texts</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Community Support</h3>
+                        <p style="color: #6b7280;">Help us continue our mission</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card hidden" id="latest-episode">
+                <h3 style="color: #1e3a8a; font-size: 1.5rem; margin-bottom: 1rem;">Latest Episode</h3>
+                <div style="border-left: 4px solid #1e3a8a; padding-left: 1rem;" id="latest-episode-content"></div>
+            </div>
+        </div>
+
+        <!-- Episodes Tab -->
+        <div id="tab-episodes" class="tab-content hidden">
+            <div class="card">
+                <h2 style="color: #1e3a8a; font-size: 2rem; margin-bottom: 1.5rem;">Podcast Episodes</h2>
+                
+                <div id="admin-episode-form" class="admin-form hidden">
+                    <h3 style="margin-bottom: 1rem;">Add New Episode</h3>
+                    <input type="text" id="episode-title" placeholder="Episode Title">
+                    <textarea id="episode-description" placeholder="Episode Description"></textarea>
+                    <input type="text" id="episode-audio" placeholder="Audio URL (required)">
+                    <input type="text" id="episode-video" placeholder="Video URL (optional)">
+                    <div class="form-row">
+                        <input type="text" id="episode-duration" placeholder="Duration (e.g., 45:30)">
+                        <input type="date" id="episode-date">
+                    </div>
+                    <button class="btn btn-primary" onclick="addEpisode()">📤 Add Episode</button>
+                </div>
+
+                <div id="episodes-list"></div>
+            </div>
+        </div>
+
+        <!-- Blog Tab -->
+        <div id="tab-blog" class="tab-content hidden">
+            <div class="card">
+                <h2 style="color: #1e3a8a; font-size: 2rem; margin-bottom: 1.5rem;">Torah Insights & Articles</h2>
+                
+                <div id="admin-blog-form" class="admin-form hidden">
+                    <h3 style="margin-bottom: 1rem;">Create New Post</h3>
+                    <input type="text" id="blog-title" placeholder="Post Title">
+                    <textarea id="blog-content" placeholder="Post Content" style="min-height: 200px;"></textarea>
+                    <div class="form-row">
+                        <input type="text" id="blog-author" placeholder="Author Name">
+                        <input type="date" id="blog-date">
+                    </div>
+                    <button class="btn btn-primary" onclick="addBlogPost()">💾 Publish Post</button>
+                </div>
+
+                <div id="blog-list"></div>
+            </div>
+        </div>
+
+        <!-- Donate Tab -->
+        <div id="tab-donate" class="tab-content hidden">
+            <div class="card" style="max-width: 700px; margin: 0 auto;">
+                <h2 style="color: #1e3a8a; font-size: 2rem; margin-bottom: 1rem;">Support Our Mission</h2>
+                <p style="color: #374151; margin-bottom: 2rem;">
+                    Your generous support helps us continue sharing Torah wisdom and Jewish learning with 
+                    communities around the world. Every contribution, no matter the size, makes a difference.
+                </p>
+                
+                <div style="background: #eff6ff; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="margin-bottom: 1rem;">Make a Donation</h3>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Select Amount ($)</label>
+                    <div class="donation-amounts">
+                        <button class="amount-btn selected" onclick="selectAmount(18)">$18</button>
+                        <button class="amount-btn" onclick="selectAmount(36)">$36</button>
+                        <button class="amount-btn" onclick="selectAmount(72)">$72</button>
+                        <button class="amount-btn" onclick="selectAmount(180)">$180</button>
+                    </div>
+                    <input type="number" id="donation-amount" placeholder="Custom amount" value="18">
+                    <button class="btn btn-primary" onclick="handleDonation()" style="width: 100%; font-size: 1.1rem; margin-top: 0.5rem;">
+                        ❤️ Donate $<span id="donation-display">18</span>
+                    </button>
+                    <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                        🔒 Secure payment processing
+                    </p>
+                </div>
+
+                <div style="border-top: 1px solid #e5e7eb; margin-top: 2rem; padding-top: 1.5rem;">
+                    <h4 style="margin-bottom: 0.75rem;">Why Your Support Matters</h4>
+                    <ul style="list-style: none; padding: 0; color: #374151;">
+                        <li style="margin-bottom: 0.5rem;">✓ Free Torah education for all</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Quality audio and video production</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Hosting and technology costs</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Expanding our reach to new communities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tab -->
+        <div id="tab-admin" class="tab-content hidden">
+            <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <h2 style="color: #1e3a8a; margin-bottom: 1.5rem;">Admin Login</h2>
+                <input type="password" id="admin-password" placeholder="Enter admin password">
+                <button class="btn btn-primary" onclick="handleAdminLogin()" style="width: 100%;">Login</button>
+                <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                    Demo password: torah5784
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p style="margin-bottom: 0.5rem;">© 2024 Abraham's Cave Podcast. All rights reserved.</p>
+        <p style="color: #93c5fd; font-size: 0.9rem;">Spreading Torah wisdom and Jewish learning to the world</p>
+    </footer>
+
+    <script>
+        let isAdmin = false;
+        let episodes = [];
+        let blogPosts = [];
+        let comments = {};
+        let currentTab = 'home';
+
+        // Load data from localStorage
+        function loadData() {
+            try {
+                episodes = JSON.parse(localStorage.getItem('episodes') || '[]');
+                blogPosts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                comments = JSON.parse(localStorage.getItem('comments') || '{}');
+            } catch (e) {
+                console.log('No existing data');
+            }
+            updateUI();
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('episodes', JSON.stringify(episodes));
+            localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+            localStorage.setItem('comments', JSON.stringify(comments));
+        }
+
+        // Show tab
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            document.getElementById('nav-' + tab).classList.add('active');
+            currentTab = tab;
+        }
+
+        // Admin login
+        function handleAdminLogin() {
+            const password = document.getElementById('admin-password').value;
+            if (password === 'torah5784') {
+                isAdmin = true;
+                document.getElementById('admin-password').value = '';
+                document.getElementById('nav-admin').style.display = 'none';
+                alert('Admin access granted!');
+                updateUI();
+                showTab('episodes');
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        // Add episode
+        function addEpisode() {
+            const title = document.getElementById('episode-title').value;
+            const description = document.getElementById('episode-description').value;
+            const audioUrl = document.getElementById('episode-audio').value;
+            const videoUrl = document.getElementById('episode-video').value;
+            const duration = document.getElementById('episode-duration').value;
+            const date = document.getElementById('episode-date').value;
+
+            if (!title || !audioUrl) {
+                alert('Please provide at least a title and audio URL');
+                return;
+            }
+
+            episodes.unshift({
+                id: Date.now(),
+                title, description, audioUrl, videoUrl, duration, date
+            });
+
+            document.getElementById('episode-title').value = '';
+            document.getElementById('episode-description').value = '';
+            document.getElementById('episode-audio').value = '';
+            document.getElementById('episode-video').value = '';
+            document.getElementById('episode-duration').value = '';
+            
+            saveData();
+            updateUI();
+        }
+
+        // Delete episode
+        function deleteEpisode(id) {
+            if (confirm('Are you sure you want to delete this episode?')) {
+                episodes = episodes.filter(ep => ep.id !== id);
+                saveData();
+                updateUI();
+            }
+        }
+
+        // Add blog post
+        function addBlogPost() {
+            const title = document.getElementById('blog-title').value;
+            const content = document.getElementById('blog-content').value;
+            const author = document.getElementById('blog-author').value;
+            const date = document.getElementById('blog-date').value;
+
+            if (!title || !content) {
+                alert('Please provide a title and content');
+                return;
+            }
+
+            blogPosts.unshift({
+                id: Date.now(),
+                title, content, author: author || 'Admin', date
+            });
+
+            document.getElementById('blog-title').value = '';
+            document.getElementById('blog-content').value = '';
+            document.getElementById('blog-author').value = '';
+
+            saveData();
+            updateUI();
+        }
+
+        // Delete blog post
+        function deleteBlogPost(id) {
+            if (confirm('Are you sure you want to delete this post?')) {
+                blogPosts = blogPosts.filter(post => post.id !== id);
+                saveData();
+                updateUI();
+            }
+        }
+
+        // Toggle comments
+        function toggleComments(episodeId) {
+            const section = document.getElementById('comments-' + episodeId);
+            section.classList.toggle('hidden');
+        }
+
+        // Add comment
+        function addComment(episodeId) {
+            const name = document.getElementById('comment-name-' + episodeId).value;
+            const text = document.getElementById('comment-text-' + episodeId).value;
+
+            if (!name.trim() || !text.trim()) {
+                alert('Please provide your name and comment');
+                return;
+            }
+
+            if (!comments[episodeId]) comments[episodeId] = [];
+            
+            comments[episodeId].push({
+                id: Date.now(),
+                name: name.trim(),
+                text: text.trim(),
+                date: new Date().toLocaleDateString()
+            });
+
+            document.getElementById('comment-name-' + episodeId).value = '';
+            document.getElementById('comment-text-' + episodeId).value = '';
+
+            saveData();
+            updateUI();
+        }
+
+        // Delete comment
+        function deleteComment(episodeId, commentId) {
+            if (confirm('Are you sure you want to delete this comment?')) {
+                comments[episodeId] = comments[episodeId].filter(c => c.id !== commentId);
+                saveData();
+                updateUI();
+            }
+        }
+
+        // Handle donation
+        function handleDonation() {
+            const amount = document.getElementById('donation-amount').value;
+            alert(`Thank you for your generous donation of $${amount}!\n\nIn a production environment, this would redirect to a secure payment processor like Stripe or PayPal.`);
+        }
+
+        // Select donation amount
+        function selectAmount(amount) {
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('donation-amount').value = amount;
+            document.getElementById('donation-display').textContent = amount;
+        }
+
+        // Update donation display
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('donation-amount').addEventListener('input', function() {
+                document.getElementById('donation-display').textContent = this.value;
+                document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+            });
+            document.getElementById('episode-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('blog-date').value = new Date().toISOString().split('T')[0];
+        });
+
+        // Update UI
+        function updateUI() {
+            // Show/hide admin forms
+            document.querySelectorAll('.admin-form').forEach(el => {
+                el.classList.toggle('hidden', !isAdmin);
+            });
+
+            // Update episodes
+            const episodesList = document.getElementById('episodes-list');
+            if (episodes.length === 0) {
+                episodesList.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">No episodes yet. Check back soon!</p>';
+            } else {
+                episodesList.innerHTML = episodes.map(ep => `
+                    <div class="episode">
+                        <div class="episode-header">
+                            <div style="flex: 1;">
+                                <div class="episode-title">${ep.title}</div>
+                                <div class="episode-meta">${ep.date} • ${ep.duration}</div>
+                            </div>
+                            ${isAdmin ? `<button class="delete-btn" onclick="deleteEpisode(${ep.id})">🗑️</button>` : ''}
+                        </div>
+                        <p style="color: #374151; margin-bottom: 1rem;">${ep.description}</p>
+                        <div class="episode-controls">
+                            <button class="btn btn-primary">▶️ Play Audio</button>
+                            ${ep.videoUrl ? '<button class="btn btn-secondary">📹 Watch Video</button>' : ''}
+                            <button class="btn btn-light" onclick="toggleComments(${ep.id})">💬 Discussion (${(comments[ep.id] || []).length})</button>
+                        </div>
+                        <div id="comments-${ep.id}" class="comments-section hidden">
+                            <h4 style="margin-bottom: 1rem;">Discussion & Comments</h4>
+                            <div class="comment-form">
+                                <input type="text" id="comment-name-${ep.id}" placeholder="Your name" style="margin-bottom: 0.5rem;">
+                                <textarea id="comment-text-${ep.id}" placeholder="Share your thoughts on this episode..." style="min-height: 80px; margin-bottom: 0.5rem;"></textarea>
+                                <button class="btn btn-primary" onclick="addComment(${ep.id})">📨 Post Comment</button>
+                            </div>
+                            <div>
+                                ${(comments[ep.id] || []).length === 0 ? 
+                                    '<p style="color: #6b7280; font-size: 0.9rem;">No comments yet. Be the first to share your thoughts!</p>' :
+                                    (comments[ep.id] || []).map(comment => `
+                                        <div class="comment">
+                                            <div class="comment-header">
+                                                <div>
+                                                    <span class="comment-author">${comment.name}</span>
+                                                    <span class="comment-date">${comment.date}</span>
+                                                </div>
+                                                ${isAdmin ? `<button class="delete-btn" onclick="deleteComment(${ep.id}, ${comment.id})">🗑️</button>` : ''}
+                                            </div>
+                                            <p style="color: #374151;">${comment.text}</p>
+                                        </div>
+                                    `).join('')
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Update blog posts
+            const blogList = document.getElementById('blog-list');
+            if (blogPosts.length === 0) {
+                blogList.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">No blog posts yet. Check back soon!</p>';
+            } else {
+                blogList.innerHTML = blogPosts.map(post => `
+                    <article style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <div>
+                                <h3 style="color: #1e3a8a; font-size: 1.5rem; margin-bottom: 0.5rem;">${post.title}</h3>
+                                <p style="color: #6b7280; font-size: 0.9rem;">By ${post.author} • ${post.date}</p>
+                            </div>
+                            ${isAdmin ? `<button class="delete-btn" onclick="deleteBlogPost(${post.id})">🗑️</button>` : ''}
+                        </div>
+                        <div style="color: #374151; white-space: pre-wrap; line-height: 1.6;">${post.content}</div>
+                    </article>
+                `).join('');
+            }
+
+            // Update latest episode on home
+            if (episodes.length > 0) {
+                document.getElementById('latest-episode').classList.remove('hidden');
+                document.getElementById('latest-episode-content').innerHTML = `
+                    <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">${episodes[0].title}</h4>
+                    <p style="color: #6b7280; margin-bottom: 1rem;">${episodes[0].description}</p>
+                    <button class="btn btn-primary" onclick="showTab('episodes')">Listen Now</button>
+                `;
+            }
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
